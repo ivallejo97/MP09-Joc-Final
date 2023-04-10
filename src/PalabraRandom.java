@@ -7,7 +7,7 @@ public class PalabraRandom {
     public char[] palabraMostrar;
     int intentos = 5;
     int estado;
-
+    boolean turno;
 
 
     public PalabraRandom() {
@@ -86,14 +86,6 @@ public class PalabraRandom {
 
     public void setPalabraRandom(String palabraRandom) {
         this.palabraRandom = palabraRandom;
-    }
-
-    public int getIntentos() {
-        return intentos;
-    }
-
-    public void setIntentos(int intentos) {
-        this.intentos = intentos;
     }
 
     public static void main(String[] args) {

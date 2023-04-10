@@ -66,15 +66,19 @@ public class Servidor {
                 estado = "\033[1;31mLa letra no está en la palabra\n\033[0m" + s + "\nIntentos Restantes: " + intentos;
                 System.out.println("\033[1;31mEl usuario ha dicho una letra incorrecta\033[0m");
             }else if (palabraRandom.estado == 2){
-                estado = "\033[1;32mPalabra adivinada: \033[0m" + s + "\nEl servidor ha generado otra palabra";
+                estado = "\033[1;32mPalabra adivinada: \033[0m" + s + "\n\u001B[34mEl servidor ha generado otra palabra\u001B[0m";
                 palabraRandom = new PalabraRandom();
                 System.out.println(estado);
                 System.out.println("\u001B[34mNueva Palabra: " + palabraRandom.getPalabraRandom());
                 intentos = 5;
             }
             if (intentos == 0){
-                estado = "\033[1;31mTe has quedado sin intentos\nLa palabra correcta era " + palabraRandom.getPalabraRandom();
+                estado = "\033[1;31mTe has quedado sin intentos\nLa palabra correcta era " + palabraRandom.getPalabraRandom() + "\n\u001B[34mSe ha generado otra palabra para seguir jugando\u001B[0m";
                 System.out.println("\033[1;31mEl usuario no ha adivinado la palabra");
+                palabraRandom = new PalabraRandom();
+                System.out.println(estado);
+                System.out.println("\u001B[34mNueva Palabra: " + palabraRandom.getPalabraRandom());
+                intentos = 5;
             }
         }
 

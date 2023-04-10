@@ -46,19 +46,16 @@ public class Cliente {
         System.out.println("Hola " + nom + "!\nEscribe una letra: ");
         //Bucle de joc
         while(mustContinue(sendingData)) {
-
             Scanner sc = new Scanner(System.in);
             letra = sc.nextLine().charAt(0);
             //byte[] missatge = ByteBuffer.allocate(4).putInt(letra).array();
             byte[] missatge = ByteBuffer.allocate(1024).putChar(letra).array();
-
             //creació del paquet a enviar
             DatagramPacket packet = new DatagramPacket(missatge,missatge.length,adrecaDesti,portDesti);
             //creació d'un sòcol temporal amb el qual realitzar l'enviament
             DatagramSocket socket = new DatagramSocket();
             //Enviament del missatge
             socket.send(packet);
-
             //creació del paquet per rebre les dades
             packet = new DatagramPacket(receivedData, 1024);
             //espera de les dades
@@ -81,6 +78,7 @@ public class Cliente {
         if(estado==1) System.out.println("DDD");
         else if (estado==0) System.out.println("AAA");
         else if (estado == 2) System.out.println("SSS");
+
 
         String rebut = new String(data,0, length);
         System.out.println(rebut);
@@ -110,11 +108,6 @@ public class Cliente {
         this.result = result;
     }
 
-
-    /*Charset charset = StandardCharsets.UTF_8;
-        char[] datos = charset.decode(ByteBuffer.wrap(data, 0, length)).array();
-        byte[] datosBytes = new String(datos, 0, length).getBytes(charset);
-        int datosInt = ByteBuffer.wrap(datosBytes).getInt();*/
     public static void main(String[] args) {
         Cliente cAdivina = new Cliente("localhost", 5556);
 
