@@ -1,12 +1,9 @@
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class Cliente {
+public class Cliente2 {
 
     private int portDesti;
     private int result;
@@ -15,7 +12,7 @@ public class Cliente {
     private InetAddress adrecaDesti;
     Scanner scanner = new Scanner(System.in);
 
-    public Cliente(String ip, int port) {
+    public Cliente2(String ip, int port) {
         this.portDesti = port;
         result = -1;
         intentos = 5;
@@ -116,7 +113,7 @@ public class Cliente {
         byte[] datosBytes = new String(datos, 0, length).getBytes(charset);
         int datosInt = ByteBuffer.wrap(datosBytes).getInt();*/
     public static void main(String[] args) {
-        Cliente cAdivina = new Cliente("localhost", 5556);
+        Cliente2 cAdivina = new Cliente2("localhost", 5556);
 
         try {
             cAdivina.runClient();

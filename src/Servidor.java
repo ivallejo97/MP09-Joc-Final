@@ -4,6 +4,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Servidor {
 
@@ -12,7 +16,7 @@ public class Servidor {
     PalabraRandom palabraRandom = new PalabraRandom();
     char[] palabra;
     boolean acabado;
-    boolean letraAdivinada;
+    int intentos = 5;
 
     public Servidor(int puerto){
         try {
@@ -27,58 +31,72 @@ public class Servidor {
     }
 
     public void runServer() throws IOException {
-        byte[] receivingData = new byte[4];
+        byte[] receivingData = new byte[1024];
         byte[] sendingData;
         InetAddress clientIP;
         int clientPort;
 
         //el servidor atén el port indefinidament
         while(!acabado){
-
-            //creació del paquet per rebre les dades
-            DatagramPacket packet = new DatagramPacket(receivingData, 4);
-            //espera de les dades
+            DatagramPacket packet = new DatagramPacket(receivingData, 24);
             socket.receive(packet);
-            //processament de les dades rebudes i obtenció de la resposta
-            sendingData = processData(packet.getData(), packet.getLength());
-            //obtenció de l'adreça del client
+            sendingData = processData(packet.getData());
             clientIP = packet.getAddress();
-            //obtenció del port del client
             clientPort = packet.getPort();
-            //creació del paquet per enviar la resposta
             packet = new DatagramPacket(sendingData, sendingData.length, clientIP, clientPort);
-            //enviament de la resposta
             socket.send(packet);
         }
         socket.close();
     }
 
-    private byte[] processData(byte[] data, int length) {
-        char nombre = ByteBuffer.wrap(data).getChar();
-        System.out.println("Recibido-> " + nombre);
-        palabraRandom.comprobarLetra(nombre);
+    private byte[] processData(byte[] data) {
+        char letra = ByteBuffer.wrap(data).getChar();
+        System.out.print("\033[0;37mEl usuario ha introducido la letra: " + letra);
 
-        return ss();
+        palabraRandom.comprobarLetra(letra);
+
+        String s = palabraRandom.mostrarPalabraActualizada();
+        String estado = "";
+        if (intentos > 0){
+            if (palabraRandom.estado == 1){
+                estado = "\033[1;32mLetra adivinada\n\033[0m" + s + "\nIntentos Restantes: " + intentos;
+                System.out.println("\033[1;32mEl usuario ha adivinado una letra\033[0m");
+            } else if (palabraRandom.estado == 0){
+                intentos--;
+                estado = "\033[1;31mLa letra no está en la palabra\n\033[0m" + s + "\nIntentos Restantes: " + intentos;
+                System.out.println("\033[1;31mEl usuario ha dicho una letra incorrecta\033[0m");
+            }else if (palabraRandom.estado == 2){
+                estado = "\033[1;32mPalabra adivinada: \033[0m" + s + "\nEl servidor ha generado otra palabra";
+                palabraRandom = new PalabraRandom();
+                System.out.println(estado);
+                System.out.println("\u001B[34mNueva Palabra: " + palabraRandom.getPalabraRandom());
+                intentos = 5;
+            }
+            if (intentos == 0){
+                estado = "\033[1;31mTe has quedado sin intentos\nLa palabra correcta era " + palabraRandom.getPalabraRandom();
+                System.out.println("\033[1;31mEl usuario no ha adivinado la palabra");
+            }
+        }
+
+        return estado.getBytes();
+
     }
 
-    private byte[] ss(){
-        //char[] arrayChars = {'h', 'e', 'l', 'l', 'o'};
+
+    private byte[] getEstadoPalabra(){
+        // Obtener el estado actual de la palabra
         palabra = palabraRandom.palabraToCharArray();
         // Crear un ByteBuffer con el tamaño adecuado
         ByteBuffer buf = ByteBuffer.allocate(palabra.length * 2);
         // Agregar cada carácter al ByteBuffer
         for (char c : palabra) {
-              buf.putChar(c);
+            buf.putChar(c);
         }
         // Obtener el array de bytes con los datos
-        byte[] byteArray = buf.array();
-        // Enviar el array de bytes por la red o almacenarlo en un archivo, por ejemplo
-        // Recibir el array de bytes
-        // Crear un ByteBuffer con los datos recibidos
-        ByteBuffer receivedBuf = ByteBuffer.wrap(byteArray);
-        // Crear un nuevo array de caracteres a partir de los datos del ByteBuffer
-        //char[] newCharArray = receivedBuf.asCharBuffer().array();
-        return byteArray;
+        Charset charset = StandardCharsets.UTF_8;
+        ByteBuffer byteBuffer = charset.encode(CharBuffer.wrap(palabraRandom.palabraMostrar));
+        byte[] bytes = byteBuffer.array();
+        return bytes;
     }
 
     public static void main(String[] args) throws SocketException, IOException {
