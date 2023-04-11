@@ -21,8 +21,6 @@ public class Cliente {
         }
     }
 
-
-
     public void runClient() throws IOException {
         byte [] receivedData = new byte[1024];
         byte[] sendingData;

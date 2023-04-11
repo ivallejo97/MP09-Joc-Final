@@ -86,7 +86,6 @@ public class Servidor {
         }
 
         return estado.getBytes();
-
     }
 
 
@@ -99,8 +98,5 @@ public class Servidor {
             e.printStackTrace();
         }
         System.out.println("Fi Servidor");
-
-
-
     }
 }
