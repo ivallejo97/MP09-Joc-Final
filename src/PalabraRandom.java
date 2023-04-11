@@ -5,9 +5,7 @@ public class PalabraRandom {
     String palabraRandom;
     private char[] palabraAdivinar;
     public char[] palabraMostrar;
-    int intentos = 5;
     int estado;
-    boolean turno;
 
 
     public PalabraRandom() {
@@ -33,21 +31,11 @@ public class PalabraRandom {
             }
         }
 
-        if (adivinado == true) {
-            //mostrarPalabraActualizada();
-            //System.out.println("Intentos " + getIntentos());
-            estado = 1;
-        } else {
-            //mostrarPalabraActualizada();
-            //System.out.println("Intentos Restantes " + getIntentos());
-            intentos--;
-            estado = 0;
-        }
+        if (adivinado == true) estado = 1;
+        else estado = 0;
 
-        if (getPalabraRandom().equals(String.valueOf(palabraMostrar))) {
-            System.out.println("¡Felicidades, has adivinado la palabra!");
-            estado = 2;
-        }
+        if (getPalabraRandom().equals(String.valueOf(palabraMostrar))) estado = 2;
+
 
         return estado;
     }
@@ -69,7 +57,6 @@ public class PalabraRandom {
     public String mostrarPalabraActualizada() {
         String palabra = "";
         for (int i = 0; i < palabraMostrar.length; i++) {
-            //System.out.print(palabraMostrar[i] + " ");
             palabra += String.valueOf("\033[1;32m" + palabraMostrar[i] + "\033[0m");
         }
         System.out.println();
@@ -88,7 +75,7 @@ public class PalabraRandom {
         this.palabraRandom = palabraRandom;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         PalabraRandom palabra = new PalabraRandom();
@@ -111,6 +98,6 @@ public class PalabraRandom {
 
 
         System.out.println("¡Lo siento, has perdido! La palabra era " + palabra.getPalabraRandom());
-    }
+    }*/
 
 }
