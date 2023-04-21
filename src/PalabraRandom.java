@@ -75,29 +75,4 @@ public class PalabraRandom {
         this.palabraRandom = palabraRandom;
     }
 
-    /*public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        PalabraRandom palabra = new PalabraRandom();
-        int intentosRestantes = 6;
-
-        System.out.println("¡Bienvenido al juego de adivinanza de letras!");
-        System.out.println("La palabra tiene " + palabra.getPalabraRandom().length() + " letras.");
-
-        while (intentosRestantes > 0) {
-            System.out.println("Intentos restantes: " + intentosRestantes);
-            System.out.println("Adivina una letra: ");
-            char letra = scanner.nextLine().charAt(0);
-            palabra.comprobarLetra(letra);
-            if (palabra.getPalabraRandom().equals(String.valueOf(palabra.palabraMostrar))) {
-                System.out.println("¡Felicidades, has adivinado la palabra!");
-                return;
-            }
-            //intentosRestantes--;
-        }
-
-
-        System.out.println("¡Lo siento, has perdido! La palabra era " + palabra.getPalabraRandom());
-    }*/
-
 }

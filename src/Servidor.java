@@ -49,6 +49,7 @@ public class Servidor {
     }
 
     private byte[] processData(byte[] data) throws InterruptedException {
+        // Recibir la letra que envia el cliente y comprobar si esta en la palabra
         char letra = ByteBuffer.wrap(data).getChar();
         System.out.print("\033[0;37mEl usuario ha introducido la letra: " + letra);
 
